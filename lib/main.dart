@@ -12,6 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Colors.blue[100],
         appBar: AppBar(
           backgroundColor: Colors.blueAccent,
           foregroundColor: Colors.white,
@@ -19,39 +20,14 @@ class App extends StatelessWidget {
           centerTitle: true,
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Colors.blueAccent, 
-                      width: 0.5
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.blueAccent,
-                        spreadRadius: 1,
-                        blurRadius: 7,
-                        offset: Offset(0, 0),
-                      ),
-                    ]
-                  ),
-                  child: Text(
-                    "As viagens dos sonhos agora são reais", 
-                    style: TextStyle(
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                )
+                TelaCadastro(),
               ]
             ),
-            TelaCadastro(),
           ],
         ),
       ),
@@ -60,37 +36,90 @@ class App extends StatelessWidget {
 }
 
 class TelaCadastro extends StatelessWidget {
+  const TelaCadastro({super.key});
   @override
   Widget build(BuildContext context) {
     return Column (
       children: [
         Container(
-          height: MediaQuery.of(context).size.width * 0.05,
-          width: MediaQuery.of(context).size.width * 0.9, // 90% da página
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
+          height: MediaQuery.of(context).size.height * 0.3,
+          width: MediaQuery.of(context).size.width * 0.4, // 90% da página
+          
           decoration: BoxDecoration(
             border: BoxBorder.all(
               color: Colors.black, 
               width: 1,
             ),
             borderRadius: BorderRadius.all(
-  
               Radius.circular(15)
             ),
-            color: Colors.white
+            color: Colors.blue[300]
           ),
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                color: Colors.blueAccent,
-                width: MediaQuery.of(context).size.width * 0.44,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.14,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 34
+                            ), 
+                            Text(
+                              "Suas viagens dos sonhos são possíveis aqui", 
+                              style: TextStyle(color: Colors.white)
+                            )
+                          ]
+                        )
+                      )
+                    ],
+                  ),
+                ]
               ),
-              Container(
-                color: Colors.green[600],
-                width: MediaQuery.of(context).size.width * 0.44,
-              ),
+              Column(
+                children:[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.14,
+                        child: Row (
+                          children: [
+                            ElevatedButton.icon(
+                              onPressed: (){},
+                              label: Text("Cadastrar novo"), 
+                              icon: Icon(Icons.add),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black,
+                                foregroundColor: Colors.white
+                              ), 
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: (){}, 
+                              label: Text("Ver cadastrados"),
+                              icon: Icon(Icons.remove_red_eye_sharp),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black
+                              ),
+                            )
+                          ]
+                        )
+                      ),
+                    ]
+                  )
+                ]
+              )
             ],
           )
         )
