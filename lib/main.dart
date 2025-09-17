@@ -117,26 +117,190 @@ class TelaMenu extends StatelessWidget {
   }
 }
 
-class Cadastrar extends StatelessWidget {
-  const Cadastrar({super.key});
+class ConsultarCadastros extends StatefulWidget {
+  const ConsultarCadastros({super.key});
+  @override
+  ConsultarCadastrosState createState() => ConsultarCadastrosState();
+}
+
+class ConsultarCadastrosState extends State<ConsultarCadastros> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-          child: Text("OI"),
+    return Scaffold(
+      body: Container(
+        width: MediaQuery.of(context).size.width * 1,
+        height: MediaQuery.of(context).size.height * 1,
+        color: Colors.blue,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.9,
+                  maxHeight: MediaQuery.of(context).size.height * 0.9,
+                ),
+                child: Container(
+                  margin: EdgeInsets.only(top: 16),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.black),
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.white,
+                  ),
+                  child: ListView.builder(
+                    itemCount: viagens.length,
+                    itemBuilder: (context, index) {
+                      final viagem = viagens[index];
+                      return Card(
+                        child: ListTile(
+                          leading: Image.network(
+                            viagem.UrlImagem,
+                            height: 40,
+                            fit: BoxFit.cover,
+                          ),
+                          title: Text(
+                            "${viagem.Destino} - ${viagem.PaisDestino}",
+                          ),
+                          subtitle: Text(viagem.Data),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  TextEditingController controllerDestino =
+                                      TextEditingController(
+                                        text: viagem.Destino,
+                                      );
+                                  TextEditingController controllerPaisDestino =
+                                      TextEditingController(
+                                        text: viagem.PaisDestino,
+                                      );
+                                  TextEditingController controllerData =
+                                      TextEditingController(text: viagem.Data);
+                                  TextEditingController controllerUrlImagem =
+                                      TextEditingController(
+                                        text: viagem.UrlImagem,
+                                      );
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text("Editar destino"),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextField(
+                                            controller: controllerDestino,
+                                            decoration: InputDecoration(
+                                              labelText: "Nome",
+                                            ),
+                                          ),
+                                          TextField(
+                                            controller: controllerPaisDestino,
+                                            decoration: InputDecoration(
+                                              labelText: "Local",
+                                            ),
+                                          ),
+                                          TextField(
+                                            controller: controllerData,
+                                            decoration: InputDecoration(
+                                              labelText: "Data",
+                                            ),
+                                          ),
+                                          TextField(
+                                            controller: controllerUrlImagem,
+                                            decoration: InputDecoration(
+                                              labelText: "Imagem",
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              viagens[index] = Viagem(
+                                                Destino: controllerDestino.text,
+                                                PaisDestino:
+                                                    controllerPaisDestino.text,
+                                                Data: controllerData.text,
+                                                UrlImagem:
+                                                    controllerUrlImagem.text,
+                                              );
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("Salvar"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: Text("Cancelar"),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                label: Text("Editar"),
+                                icon: Icon(Icons.edit),
+                              ),
+                              SizedBox(width: 8),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          "Deseja excluir a viagem para ${viagem.Destino}?",
+                                        ),
+                                        content: Text("Não é reversível!"),
+                                        actions: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("Cancelar"),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                viagens.removeAt(index);
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("Tenho certeza!"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                label: Text("Deletar"),
+                                icon: Icon(Icons.delete_forever),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // volta para a tela anterior
+                },
+                child: Text("Voltar"),
+              ),
+            ),
+          ],
         ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text("Ok"),
-        ),
-      ],
+      ),
     );
   }
 }
