@@ -24,7 +24,20 @@ class App extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [TelaCadastro()],
+              children: [
+                ConstrainedBox(
+                  // Acabei de aprender isso aqui
+                  constraints: BoxConstraints(minHeight: 200, minWidth: 400),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      color: Colors.blue[300],
+                    ),
+                    child: TelaMenu(),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
