@@ -305,115 +305,202 @@ class ConsultarCadastrosState extends State<ConsultarCadastros> {
   }
 }
 
+class TelaCadastro extends StatefulWidget {
+  const TelaCadastro({super.key});
+  @override
+  TelaCadastroState createState() => TelaCadastroState();
+}
 
-final TextEditingController _controllerNomeDestino = TextEditingController();
-final TextEditingController _controllerNomePais = TextEditingController();
-final TextEditingController _controllerDataViagem = TextEditingController();
-final TextEditingController _controllerUrlImage = TextEditingController();
+List<Viagem> viagens = [];
 
-class TelaCadastro extends StatelessWidget {
-  const TelaCadastro ({super.key});
+class TelaCadastroState extends State<TelaCadastro> {
+  final TextEditingController _controllerNomeDestino = TextEditingController();
+  final TextEditingController _controllerNomePais = TextEditingController();
+  final TextEditingController _controllerDataViagem = TextEditingController();
+  final TextEditingController _controllerUrlImagem = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Column (
-      children: [
-        ConstrainedBox (
-          constraints: BoxConstraints(
-            minHeight: 200,
-            minWidth: 400
-          ),
-          child: Container(
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(width: 2, color: Colors.black, style: BorderStyle.solid),
-              borderRadius: BorderRadius.circular(8)
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+      body: Container(
+        width: MediaQuery.of(context).size.width * 1,
+        color: Colors.blue,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(minHeight: 200, minWidth: 200),
+              child: Container(
+                width: 300,
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    width: 2,
+                    color: Colors.black,
+                    style: BorderStyle.solid,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container (
-                      margin: EdgeInsets.all(10),
-                      child: Text("Cadastro de viagens", style: TextStyle(fontSize: 20),)
-                    )
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            "Cadastro de viagens",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 600,
+                          height: 80,
+                          child: TextField(
+                            controller: _controllerNomeDestino,
+                            decoration: InputDecoration(
+                              labelText: "Nome do destino",
+                              filled: true,
+                              fillColor: Colors.grey[100],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 600,
+                          height: 80,
+                          child: TextField(
+                            controller: _controllerNomePais,
+                            decoration: InputDecoration(
+                              labelText: "Nome do país de destino",
+                              filled: true,
+                              fillColor: Colors.grey[100],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 600,
+                          height: 80,
+                          child: TextField(
+                            controller: _controllerDataViagem,
+                            decoration: InputDecoration(
+                              labelText: "Data da viagem",
+                              filled: true,
+                              fillColor: Colors.grey[100],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 600,
+                          height: 80,
+                          child: TextField(
+                            controller: _controllerUrlImagem,
+                            decoration: InputDecoration(
+                              labelText: "URL da foto do destino",
+                              filled: true,
+                              fillColor: Colors.grey[100],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Center(child: Text("Cuidado!")),
+                                    content: Text(
+                                      "Tem certeza que quer salvar esse destino? (Verifique se as informações estão corretas)",
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.black,
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        child: Text("Não tenho!"),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Viagem novaViagem = Viagem(
+                                            Destino:
+                                                _controllerNomeDestino.text,
+                                            PaisDestino:
+                                                _controllerNomePais.text,
+                                            Data: _controllerDataViagem.text,
+                                            UrlImagem:
+                                                _controllerUrlImagem.text,
+                                          );
+
+                                          Navigator.of(context).pop();
+
+                                          setState(() {
+                                            viagens.add(novaViagem);
+                                          });
+
+                                          _controllerNomeDestino.clear();
+                                          _controllerNomePais.clear();
+                                          _controllerDataViagem.clear();
+                                          _controllerUrlImagem.clear();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => App(),
+                                            ),
+                                          );
+                                        },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                          foregroundColor: Colors.black,
+                                        ),
+                                        child: Text("Tenho certeza!"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.blue,
+                            ),
+                            child: Text("Salvar"),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 600,
-                      height: 80,
-                      child: TextField(
-                        controller: _controllerNomeDestino,
-                        decoration: InputDecoration(
-                          labelText: "Nome do destino",
-                          filled: true,
-                          fillColor: Colors.grey[100],
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          )
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 600,
-                      height: 80,
-                      child: TextField(
-                        controller: _controllerNomePais,
-                        decoration: InputDecoration(
-                          labelText: "Nome do país de destino",
-                          filled: true,
-                          fillColor: Colors.grey[100],
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          )
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 600,
-                      height: 80,
-                      child: TextField(
-                        controller: _controllerDataViagem,
-                        decoration: InputDecoration(
-                          labelText: "Data da viagem",
-                          filled: true,
-                          fillColor: Colors.grey[100],
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          )
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 600,
-                      height: 80,
-                      child: TextField(
-                        controller: _controllerUrlImage,
-                        decoration: InputDecoration(
-                          labelText: "URL da foto do destino",
-                          filled: true,
-                          fillColor: Colors.grey[100],
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          )
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
+              ),
             ),
-          ),
-        )
-        
-      ]
+          ],
+        ),
+      ),
     );
   }
 }
+
