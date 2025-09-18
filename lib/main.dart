@@ -504,3 +504,16 @@ class TelaCadastroState extends State<TelaCadastro> {
   }
 }
 
+class Viagem {
+  String Destino;
+  String PaisDestino;
+  String Data;
+  String UrlImagem;
+
+  Viagem({
+    required this.Destino,
+    required this.PaisDestino,
+    required this.Data,
+    required this.UrlImagem,
+  });
+}
